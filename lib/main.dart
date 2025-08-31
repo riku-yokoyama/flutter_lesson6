@@ -57,6 +57,20 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(onPressed: (){
+              _pushPage();
+            }, child: Text('プッシュ遷移')),
+
+            ElevatedButton(onPressed: (){
+              _modalPage();
+            }, child: Text('モーダル遷移'))
+          ],
+        )
+      ),
     );
   }
 }
@@ -77,7 +91,9 @@ class NextPage extends StatelessWidget {
               'Next Pageです',
               style: TextStyle(fontSize: 16),
             ),
-            ElevatedButton(onPressed: () {}, child: Text('戻る'))
+            ElevatedButton(onPressed: (){
+              Navigator.pop(context);
+            }, child: Text('戻る'))
           ],
         ),
       ),
