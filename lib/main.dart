@@ -7,7 +7,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   // プッシュ遷移用の関数
   void _pushPage() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -42,8 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
   // モーダル遷移用の関数
   void _modalPage() {
     Navigator.push(
+        // Navidatorは画面遷移を管理する。contextはスタックで保存される画面情報において
+        // 今どこにいるかを示す情報。
         context,
         MaterialPageRoute(
+            // 次にどのように画面遷移するかを示す属性
             builder: (context) {
               return NextPage();
             },
@@ -58,19 +59,21 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(onPressed: (){
-              _pushPage();
-            }, child: Text('プッシュ遷移')),
-
-            ElevatedButton(onPressed: (){
-              _modalPage();
-            }, child: Text('モーダル遷移'))
-          ],
-        )
-      ),
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                _pushPage();
+              },
+              child: Text('プッシュ遷移')),
+          ElevatedButton(
+              onPressed: () {
+                _modalPage();
+              },
+              child: Text('モーダル遷移'))
+        ],
+      )),
     );
   }
 }
@@ -91,9 +94,11 @@ class NextPage extends StatelessWidget {
               'Next Pageです',
               style: TextStyle(fontSize: 16),
             ),
-            ElevatedButton(onPressed: (){
-              Navigator.pop(context);
-            }, child: Text('戻る'))
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('戻る'))
           ],
         ),
       ),
