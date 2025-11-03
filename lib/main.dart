@@ -29,92 +29,77 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+/**
+ * メイン画面
+ */
 class _MyHomePageState extends State<MyHomePage> {
-  /* プッシュ遷移用の関数 */
-  void _pushPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NextPage(id: 1, name: 'プッシュ遷移');
-    }));
-  }
-
-  /* モーダル遷移用の関数 */
-  void _modalPage() {
-    Navigator.push(
-        // Navidatorは画面遷移を管理する。contextはスタックで保存される画面情報において
-        // 今どこにいるかを示す情報。
-        context,
-        MaterialPageRoute(
-            // 次にどのように画面遷移するかを示す属性
-            builder: (context) {
-              return NextPage(
-                id: 2,
-                name: 'モーダル遷移',
-              );
-            },
-            fullscreenDialog: true));
-  }
+  /* ListView画面から遷移先の詳細画面に渡すデータを定義する */
+  // 要素にMapを格納したList
+  List<Map<String, String>> contacts = [
+    // 各要素(Map)を定義
+    {'name': '山田 太郎', 'number': '080-1234-5678', 'address': '東京都'},
+    {'name': '鈴木 一郎', 'number': '080-1234-5678', 'address': '千葉県'},
+    {'name': '佐藤 花子', 'number': '080-1234-5678', 'address': '埼玉県'},
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-              onPressed: () {
-                _pushPage();
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
+        ),
+
+        /* ボディ部(電話帳のリスト画面) */
+        body: ListView.builder(
+          itemCount: contacts.length,
+          // ListView.builderはitemContに定義した数分itemBuilder内が繰り返される
+          itemBuilder: (context, index) {
+            /* 以下のリストタイルが三枚分繰り返される */
+            return ListTile(
+              // 電話アイコン
+              leading: Icon(Icons.phone),
+              // 名前 ** コードの説明は以下 **
+              // contactsはMapを格納するListの2重配列のような構造
+              // contacts[index] = contactsというリストのindex番目の要素を取得
+              // ['name'] = 取り出した要素(= Map) のどの要素化をキー名を指定して取得
+              // 最後の! = dartではMapの要素はnull許容の場合コンパイルエラーになるので、
+              // 絶対にnullでないことの明示として!をつける
+              title: Text(contacts[index]['name']!),
+              // 電話番号
+              subtitle: Text(contacts[index]['number']!),
+              // 右矢印アイコン
+              trailing: Icon(Icons.keyboard_arrow_right),
+              // 詳細ページに遷移するコード
+              onTap: () {
+                // リストタイルを押したときの処理
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  // MaterialPageRouteのbuilderプロパティにcontextを受け取ってDetailPageを返す無名関数を定義
+                  return DetailPage(contact: contacts[index]);
+                }));
               },
-              child: Text('プッシュ遷移')),
-          ElevatedButton(
-              onPressed: () {
-                _modalPage();
-              },
-              child: Text('モーダル遷移'))
-        ],
-      )),
-    );
+            );
+          },
+        ));
   }
 }
 
-// 遷移先画面のウィジェット
-class NextPage extends StatelessWidget {
-  /* コンストラクタ */
-  NextPage({required this.id, required this.name});
-  // 遷移元ID
-  final int id;
-  // 画面名
-  final String name;
+/**
+ * 遷移先の詳細画面
+ */
+class DetailPage extends StatelessWidget {
+  const DetailPage({super.key, required this.contact});
+
+  // contactsの1要素であるcontact(Map)のコンストラクタ
+  final Map<String, String> contact;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Next page'),
+        title: Text('${contact['name']}'),
       ),
-
-      /* 遷移先ページのボディ部 */
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Next Pageです id = $id, name = $name',
-              style: TextStyle(fontSize: 16),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                // idによって遷移先を変える
-                child: Text(id == 1 ? '戻る' : '閉じる'))
-          ],
-        ),
-      ),
+      body: Center(),
     );
   }
 }
