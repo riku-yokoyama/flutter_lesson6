@@ -30,14 +30,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // プッシュ遷移用の関数
+  /* プッシュ遷移用の関数 */
   void _pushPage() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NextPage();
+      return NextPage(id: 1, name: 'プッシュ遷移');
     }));
   }
 
-  // モーダル遷移用の関数
+  /* モーダル遷移用の関数 */
   void _modalPage() {
     Navigator.push(
         // Navidatorは画面遷移を管理する。contextはスタックで保存される画面情報において
@@ -46,7 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
         MaterialPageRoute(
             // 次にどのように画面遷移するかを示す属性
             builder: (context) {
-              return NextPage();
+              return NextPage(
+                id: 2,
+                name: 'モーダル遷移',
+              );
             },
             fullscreenDialog: true));
   }
@@ -80,25 +83,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // 遷移先画面のウィジェット
 class NextPage extends StatelessWidget {
+  /* コンストラクタ */
+  NextPage({required this.id, required this.name});
+  // 遷移元ID
+  final int id;
+  // 画面名
+  final String name;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Next page'),
       ),
+
+      /* 遷移先ページのボディ部 */
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Next Pageです',
+              'Next Pageです id = $id, name = $name',
               style: TextStyle(fontSize: 16),
             ),
             ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('戻る'))
+                // idによって遷移先を変える
+                child: Text(id == 1 ? '戻る' : '閉じる'))
           ],
         ),
       ),
