@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -102,15 +104,127 @@ class DetailPage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            Text('氏名 = ${contact['name']}'),
-            Text('電話番号 = ${contact['number']}'),
-            Text('住所 = ${contact['address']}'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 20),
+                  Icon(Icons.account_circle, size: 32),
+                  Text(
+                    '氏名 = ${contact['name']}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 20),
+                  Icon(Icons.phone, size: 32),
+                  Text(
+                    '電話番号 = ${contact['number']}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 20),
+                  Icon(Icons.home, size: 32),
+                  Text(
+                    '住所 = ${contact['address']}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
             // 電話アイコン付きボタン
             ElevatedButton.icon(
-              onPressed: () {},
               // ★　Icons.phoneはウィジェットではないのでIconウィジェットの引数として渡す
               icon: Icon(Icons.phone),
               label: Text('電話をかける'),
+              onPressed: () {
+                // 電話をかけるボタン押下時の処理
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CallPage(contact: contact);
+                }));
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/**
+ * 電話画面（電話をかけるボタンを押した際の遷移先画面）
+ */
+class CallPage extends StatelessWidget {
+  const CallPage({super.key, required this.contact});
+
+  // 電話帳情報を格納するMap
+  final Map<String, String> contact;
+
+  @override
+  Widget build(BuildContext context) {
+    // サイズボックス
+    const size = SizedBox(height: 90);
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+          children: [
+            // 氏名
+            Text(
+              '${contact['name']}',
+              style: TextStyle(fontSize: 35),
+            ),
+            // 電話番号
+            Text(
+              '${contact['number']}',
+              style: TextStyle(fontSize: 17),
+            ),
+            size,
+            // 横並びに丸画像を並べる
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                  radius: 35,
+                  child: Icon(Icons.mic_off),
+                ),
+                CircleAvatar(
+                  radius: 35,
+                  child: Icon(Icons.keyboard_alt_outlined),
+                ),
+                CircleAvatar(
+                  radius: 35,
+                  child: Icon(Icons.phone_disabled_sharp),
+                ),
+              ],
+            ),
+            size,
+            size,
+            ElevatedButton(
+              onPressed: () {},
+              child: Icon(
+                Icons.phone_missed_sharp,
+                size: 29,
+                color: Colors.white,
+              ),
+              style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(25),
+                  backgroundColor: Colors.red),
             )
           ],
         ),
