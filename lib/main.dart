@@ -99,7 +99,22 @@ class DetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('${contact['name']}'),
       ),
-      body: Center(),
+      body: Center(
+        child: Column(
+          children: [
+            Text('氏名 = ${contact['name']}'),
+            Text('電話番号 = ${contact['number']}'),
+            Text('住所 = ${contact['address']}'),
+            // 電話アイコン付きボタン
+            ElevatedButton.icon(
+              onPressed: () {},
+              // ★　Icons.phoneはウィジェットではないのでIconウィジェットの引数として渡す
+              icon: Icon(Icons.phone),
+              label: Text('電話をかける'),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
