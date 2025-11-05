@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_lesson6/widgets/row_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -105,46 +106,26 @@ class DetailPage extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 20),
-                  Icon(Icons.account_circle, size: 32),
-                  Text(
-                    '氏名 = ${contact['name']}',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: RowInfo(
+                    icon: Icon(Icons.account_circle_outlined),
+                    contact: contact,
+                    message: '名前',
+                    mapKey: 'name')),
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: RowInfo(
+                    icon: Icon(Icons.phone),
+                    contact: contact,
+                    message: '電話番号',
+                    mapKey: 'number')),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 20),
-                  Icon(Icons.phone, size: 32),
-                  Text(
-                    '電話番号 = ${contact['number']}',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 20),
-                  Icon(Icons.home, size: 32),
-                  Text(
-                    '住所 = ${contact['address']}',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
+              child: RowInfo(
+                  icon: Icon(Icons.home),
+                  contact: contact,
+                  message: '住所',
+                  mapKey: 'address'),
             ),
             // 電話アイコン付きボタン
             ElevatedButton.icon(
